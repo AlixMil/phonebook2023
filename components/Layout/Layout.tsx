@@ -3,6 +3,7 @@ import { SettingOutlined } from '@ant-design/icons'
 import Icon from '@ant-design/icons/lib/components/Icon'
 import Head from 'next/head'
 import classNames from 'classnames'
+import { useSelector } from 'react-redux'
 
 import styles from '../../styles/layout.module.css'
 import { IContacts } from '../../types/contactsState'
@@ -13,7 +14,8 @@ interface ILayout {
 
 
 export default function Layout({ children }: ILayout): JSX.Element {
-	const [contacts, setContacts] = useState<IContacts[]>()
+	const contacts = useSelector((state: any) => state.contacts)
+	console.log(contacts)
 
 	return (
 		<>
