@@ -1,0 +1,36 @@
+.header {
+	height: 60px;
+	color: white;
+	background-color: rgb(127, 153, 255);
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+}
+
+.headerItem {
+	width: 400px;
+	text-align: center;
+}
+
+.searchField {
+	padding: 8px;
+	border-radius: 4px;
+	border: 1px solid black;
+	width: 400px;
+}
+
+.footer {
+	bottom: 0;
+	position: absolute;
+	height: auto;
+	width: 100%;
+	background-color: rgb(177, 255, 248);
+	display: flex;
+	justify-content: space-around;
+}
+
+/* .footerItem {
+	height: 100%;
+	text-align: center;
+	vertical-align: center;
+} */
