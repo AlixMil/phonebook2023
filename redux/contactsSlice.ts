@@ -1,28 +1,11 @@
 import { IContact } from './../types/generalTypes';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootStore } from './store';
-import { isArray } from 'util';
+import { IChangeAction, IAssignTagAction, IRemoveTagAction } from './contactsSlice.types'
 
 const initialState: IContact[] = [
 	{ firstName: 'Andrey', lastName: 'Feramonov', phoneNumber: '89771337004', description: 'Like bikes', age: 22, tags: ['helper'], id: '1' }
 ]
-
-type IChangeAction<T> = {
-	[K in keyof T]: {
-		value: T[K]
-		fieldToChangeName: K
-	}
-}[keyof T] & { index: number }
-
-type IAssignTagAction = {
-	index: number,
-	value: string
-}
-
-type IRemoveTagAction = {
-	index: number
-	value: string
-}
 
 export const contactsSlice = createSlice({
 	name: "contacts",
