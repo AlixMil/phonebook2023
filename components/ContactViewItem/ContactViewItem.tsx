@@ -1,8 +1,16 @@
 import React from 'react'
-import { IContacts } from '../../types/contactsState'
+import { IContact } from '../../types/generalTypes'
 import styles from './ContactViewItem.module.css'
+import { remove } from '../../redux/contactsSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { AppDispatch } from '../../redux/store'
 
-function ContactViewItem({ firstName, lastName, regionCode, phoneNumber, description, age, tags }: IContacts): JSX.Element {
+function ContactViewItem({ firstName, lastName, phoneNumber, description, age, tags, id }: IContact): JSX.Element {
+	const dispatch: AppDispatch = useDispatch()
+
+	const handleRemoveContact = () => {
+		dispatch(remove(id))
+	}
 	return (
 		<div className={styles.container}>
 			<div>
@@ -13,9 +21,6 @@ function ContactViewItem({ firstName, lastName, regionCode, phoneNumber, descrip
 			</div>
 			<div>
 				{lastName}
-			</div>
-			<div>
-				{regionCode}
 			</div>
 			<div>
 				{phoneNumber}
@@ -29,6 +34,7 @@ function ContactViewItem({ firstName, lastName, regionCode, phoneNumber, descrip
 			<div>
 				{tags}
 			</div>
+			<button onClick={handleRemoveContact}>Remove</button>
 		</div>
 	)
 }

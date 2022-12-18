@@ -2,16 +2,32 @@ import styles from '../styles/home.module.css'
 import { useSelector, useDispatch } from 'react-redux'
 import { add } from '../redux/contactsSlice'
 import ContactViewItem from '../components/ContactViewItem/ContactViewItem'
-import { IContacts } from '../types/contactsState'
-import { useCallback } from 'react'
+import { IContact } from '../types/generalTypes'
+import { useCallback, useEffect } from 'react'
 import { v4 as uuid } from 'uuid'
+import { AppDispatch } from '../redux/store'
 
 export default function Home(): JSX.Element {
   const contacts = useSelector((state: any) => state.contacts)
-  const dispatch = useDispatch()
-  console.log(contacts)
+  useEffect(() => {
+    console.log('hello world')
+  }, [contacts])
 
-  const handleAddContact = useCallback(() => dispatch(add({ firstName: 'Anatoly', lastName: 'Gudinni', phoneNumber: '892926073408', description: 'Like Bicecyles', age: 26, tags: ['warner'], id: uuid() })), [])
+  const dispatch: AppDispatch = useDispatch()
+
+  const handleAddContact = () => dispatch(
+    add(
+      {
+        firstName: 'Anatoly',
+        lastName: 'Gudinni',
+        phoneNumber: '892926073408',
+        description: 'Like Bicecyles',
+        age: 26,
+        tags: ['warner'],
+        id: uuid()
+      }
+    ))
+
   return (
     <div className={styles.home}>
       <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -19,7 +35,7 @@ export default function Home(): JSX.Element {
         <button onClick={handleAddContact}>Add contact</button>
       </div>
       <div>
-        {contacts.length !== 0 ? contacts.map((el: IContacts) => (
+        {contacts.length !== 0 ? contacts.map((el: IContact) => (
           <ContactViewItem
             firstName={el.firstName}
             lastName={el.lastName}

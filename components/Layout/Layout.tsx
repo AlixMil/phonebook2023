@@ -1,22 +1,12 @@
-import React, { ReactNode, useState } from 'react'
-import { SettingOutlined } from '@ant-design/icons'
-import Icon from '@ant-design/icons/lib/components/Icon'
+import React from 'react'
 import Head from 'next/head'
 import classNames from 'classnames'
 import { useSelector } from 'react-redux'
-
 import styles from '../../styles/layout.module.css'
-import { IContacts } from '../../types/contactsState'
-
-interface ILayout {
-	children: ReactNode
-}
-
+import { ILayout } from './Layout.types'
 
 export default function Layout({ children }: ILayout): JSX.Element {
-	const contacts = useSelector((state: any) => state.contacts)
-	console.log(contacts)
-
+	const contacts = useSelector((state: any) => state.contacts) // For making smart search in future
 	return (
 		<>
 			<Head>
