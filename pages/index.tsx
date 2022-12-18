@@ -1,11 +1,13 @@
 import styles from '../styles/home.module.css'
 import { useSelector, useDispatch } from 'react-redux'
-import { add } from '../redux/contactsSlice'
+import { add, remove } from '../redux/contactsSlice'
 import ContactViewItem from '../components/ContactViewItem/ContactViewItem'
 import { IContact } from '../types/generalTypes'
-import { useCallback, useEffect } from 'react'
+import { useEffect } from 'react'
 import { v4 as uuid } from 'uuid'
 import { AppDispatch } from '../redux/store'
+import { List, Skeleton } from 'antd'
+import Link from 'next/link'
 
 export default function Home(): JSX.Element {
   const contacts = useSelector((state: any) => state.contacts)
@@ -28,6 +30,10 @@ export default function Home(): JSX.Element {
       }
     ))
 
+  const handleRemoveContact = (id: string) => dispatch(
+    remove(id)
+  )
+
   return (
     <div className={styles.home}>
       <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -35,18 +41,24 @@ export default function Home(): JSX.Element {
         <button onClick={handleAddContact}>Add contact</button>
       </div>
       <div>
-        {contacts.length !== 0 ? contacts.map((el: IContact) => (
-          <ContactViewItem
-            firstName={el.firstName}
-            lastName={el.lastName}
-            phoneNumber={el.phoneNumber}
-            description={el.description}
-            age={el.age}
-            tags={el.tags}
-            key={el.id}
-            id={el.id}
+        {contacts.length !== 0 ? (
+          <List
+            itemLayout='horizontal'
+            dataSource={contacts}
+            bordered
+            renderItem={(item: IContact) => (
+              <List.Item
+                key={item.id}
+                actions={[<Link key={`edit ${item.id}`} href={`${item.id}`}>edit</Link>, <a key={`remove ${item.id}`} onClick={() => handleRemoveContact(item.id)}>remove</a>]}
+                title={item.firstName}
+              >
+                {item.firstName}
+                {item.age}
+                {item.phoneNumber}
+              </List.Item>
+            )}
           />
-        )) : <h1>Contacts does not exists!</h1>}
+        ) : <h1>Contacts does not exists!</h1>}
       </div>
       <div>
         setting of list
