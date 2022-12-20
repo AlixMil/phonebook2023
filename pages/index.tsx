@@ -3,11 +3,16 @@ import { useSelector, useDispatch } from 'react-redux'
 import { add, remove } from '../redux/contactsSlice'
 import ContactViewItem from '../components/ContactViewItem/ContactViewItem'
 import { IContact } from '../types/generalTypes'
-import { useEffect } from 'react'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { v4 as uuid } from 'uuid'
 import { AppDispatch } from '../redux/store'
-import { List, Skeleton } from 'antd'
+import { List, Skeleton, Button } from 'antd'
 import Link from 'next/link'
+import { Avatar } from 'antd';
+import { PlusCircleOutlined } from '@ant-design/icons'
+import ModalAddContactView from '../components/ModalAddContactView/ModalAddContactView'
+import { PayloadAction } from '@reduxjs/toolkit'
+
 
 export default function Home(): JSX.Element {
   const contacts = useSelector((state: any) => state.contacts)
@@ -17,7 +22,13 @@ export default function Home(): JSX.Element {
 
   const dispatch: AppDispatch = useDispatch()
 
-  const handleAddContact = () => dispatch(
+  const [isModalAddContactView, setIsModalAddContactView] = useState<boolean>(false)
+
+  const handleModalView = (): void => {
+    setIsModalAddContactView((state: boolean) => !state)
+  }
+
+  const handleAddContact = (): PayloadAction<IContact> => dispatch(
     add(
       {
         firstName: 'Anatoly',
@@ -26,7 +37,8 @@ export default function Home(): JSX.Element {
         description: 'Like Bicecyles',
         age: 26,
         tags: ['warner'],
-        id: uuid()
+        id: uuid(),
+        note: 'asdasdas'
       }
     ))
 
@@ -36,11 +48,12 @@ export default function Home(): JSX.Element {
 
   return (
     <div className={styles.home}>
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         setting of tags
-        <button onClick={handleAddContact}>Add contact</button>
+        <Button icon={<PlusCircleOutlined />} onClick={handleModalView} />
+        <ModalAddContactView open={isModalAddContactView} onOk={handleModalView} onCancel={handleModalView} />
       </div>
-      <div>
+      <div className={styles.list}>
         {contacts.length !== 0 ? (
           <List
             itemLayout='horizontal'
@@ -52,9 +65,15 @@ export default function Home(): JSX.Element {
                 actions={[<Link key={`edit ${item.id}`} href={`${item.id}`}>edit</Link>, <a key={`remove ${item.id}`} onClick={() => handleRemoveContact(item.id)}>remove</a>]}
                 title={item.firstName}
               >
-                {item.firstName}
-                {item.age}
-                {item.phoneNumber}
+                <div
+                  className={styles.listItem}
+                >
+                  <Avatar draggable={false} className={styles.listItemElement} />
+                  <p className={styles.listItemElement} style={{ paddingLeft: '20px' }}>Name:</p>
+                  <p className={styles.listItemElement}>{item.firstName}</p>
+                  <p className={styles.listItemElement}>Phone number:</p>
+                  <p className={styles.listItemElement}>{item.phoneNumber}</p>
+                </div>
               </List.Item>
             )}
           />
@@ -63,6 +82,5 @@ export default function Home(): JSX.Element {
       <div>
         setting of list
       </div>
-    </div>
-  )
+    </div>)
 }
